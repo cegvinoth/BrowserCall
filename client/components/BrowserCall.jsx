@@ -1,45 +1,23 @@
 import React, { Component } from 'react';
-import twilio from 'twilio'
-
-var ref;
-
-export default class Events extends React.Component {
-    componentDidMount(){
-    console.log("he");
-    console.log(this.props.params);
-         ref.setState({setCallStatus: this.props.params.callStatus});
-    }
-    render(){
-         return (<div>Event Received</div>);
-    }
-}
+import twilio from 'twilio';
+import { Logcalls } from '../../imports/api/logcalls.js';
 
 export default class CallBox extends React.Component {
 constructor(props) {
   super(props);
-  this.state = {
-     setCallStatus:'Application Ready1'
-  };
 }
 componentDidMount() {
-  ref = this;
-  this.setState({setCallStatus: 'Incoming Call from1'});
-  InitiateWebApp(this);
+  InitiateWebApp();
 }
 
 render() {
   return (
-    <div class="callBox panel-heading">
-    Call Progress Events:
-    <div class="panel-body">
-    <center><h2 id="callprogress">{this.state.setCallStatus} </h2></center>
-    </div>
-    </div>
+       <div> Application Loaded </div>
   );
 }
 }
 
-function InitiateWebApp(reff)
+function InitiateWebApp()
 {
 
   var identity = randomUsername();
@@ -48,7 +26,6 @@ function InitiateWebApp(reff)
   capability.allowClientIncoming(identity);
   var token = capability.generate();
   document.getElementById('log').style.display = 'block';
-  log('Token'+token);
   Twilio.Device.setup(token);
   Twilio.Device.ready(function (device) {
     document.getElementById('call-controls').style.display = 'block';
@@ -65,6 +42,7 @@ function InitiateWebApp(reff)
   });
 
   Twilio.Device.disconnect(function (conn) {
+    document.getElementById('log1').style.display = 'none';
     document.getElementById('log').style.display = 'block';
     document.getElementById('button-call').style.display = 'inline';
     document.getElementById('button-hangup').style.display = 'none';
@@ -78,11 +56,9 @@ function InitiateWebApp(reff)
       conn.reject();
       log('It\'s your nemesis. Rejected call.');
     } else {
-       log('incoming call');
-      document.getElementById('log').style.display = 'block';
-    log('incoming'+ref.state.setCallStatus);
-    ref.state.setCallStatus = "incoming";
-     ref.setState({setCallStatus: "Incoming Call from "+conn.parameters.From});
+      // log('incoming call');
+      document.getElementById('log1').style.display = 'block';
+      //document.getElementById('callprogress').innerHTML = "Incoming Call from"+conn.parameters.From;
       conn.accept();
     }
   });
@@ -90,19 +66,16 @@ function InitiateWebApp(reff)
   setClientNameUI(identity);
 
   document.getElementById('button-call').onclick = function () {
-    document.getElementById('log').style.display = 'block';
+    document.getElementById('log1').style.display = 'block';
     var params = {
       To: document.getElementById('phone-number').value
     };
-
-    ref.setState({setCallStatus: 'Calling '+params.To})
+    Logcalls.insert({ cid: 1,createdAt: new Date(),From: '' ,To: '',callStatus: 'Application Ready'});
     console.log('Calling ' + params.To + '...');
     Twilio.Device.connect(params);
   };
   document.getElementById('button-hangup').onclick = function () {
     document.getElementById('log').style.display = 'block';
-    ref.setState({setCallStatus: "Disconnecting"});
-    log(ref.state.setCallStatus);
     Twilio.Device.disconnectAll();
   };
 }

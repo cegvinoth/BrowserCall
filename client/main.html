@@ -33,9 +33,17 @@
         </ul>
       </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Dashboard</h1>
-        <h4 class="sub-header" id="client-name">Twilio Client</h4>
-        <div class="panel panel-success" id="log">
+        <h1 class="page-header">Dashboard1</h1>
+        <h4 class="sub-header" id="client-name">Twilio Client1</h4>
+        <div id="log"> </div>
+        <div class="panel panel-success" id="log1">
+          <div class="panel-heading">
+          Call Progress Events:
+          </div>
+          <div class="panel-body">
+          <center> <h2 id="callprogress"> {{#each logcalls}} {{> logcall}}   {{/each}}</h2>
+          </center>
+          </div>
         </div>
         <div class="panel panel-primary">
            <div class="panel-heading">Make a Call</div>
@@ -53,3 +61,7 @@
   </div>
 
 </body>
+
+<template name="logcall">
+  <li>{{callStatus}}</li>
+</template>

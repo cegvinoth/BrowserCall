@@ -113,10 +113,14 @@ body {  padding-top: 50px;
 }
 
 #log{
-  display: none;
+  display: block;
 }
 
 #callprogress{
   text-transform: uppercase;
   color: blue;
+}
+
+#log1{
+  display: none;
 }
