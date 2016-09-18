@@ -2,66 +2,137 @@
   <meta charset="utf-8"></meta>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
   <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-  <title>iHealthLabs Browser to Browser Call DashBoard</title>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
-  <script type="text/css" href="main.css"></script>
+  <title>Browser to Browser Call</title>
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> </link>
+  <link href="/css/creative.css" rel="stylesheet"> </link>
+  <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> </link>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'></link>
+  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> </link>
   <script src="https://unpkg.com/react@15.3.0/dist/react.js"></script>
   <script src="https://unpkg.com/react-dom@15.3.0/dist/react-dom.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   <script type="text/javascript" src="//media.twiliocdn.com/sdk/js/client/v1.3/twilio.min.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+  <script src="/js/creative.min.js"></script>
+
 </head>
 
-<body>
-
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+<body id="page-top">
+  <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">Browser to Browser Call</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand page-scroll" href="#page-top">BrowserCall</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a class="page-scroll" href="#about">Make Call</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container-fluid">
-    <div class="row">
-    <!--  <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
-          <li class="active"><a href="#">Call Progress Details <span class="sr-only">(current)</span></a></li>
-          <li><a href="projectdetails.html"> Technical Details about this Application </a></li>
-        </ul>
-      </div>  -->
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Dashboard</h1>
-        <h4 class="sub-header" id="client-name">Twilio Client</h4>
-        <div id="log"> </div>
-        <div class="panel panel-success" id="log1">
-          <div class="panel-heading">
-          Call Progress Events:
-          </div>
-          <div class="panel-body">
-          <center> <h2 id="callprogress"> {{#each logcalls}} {{> logcall}}   {{/each}}</h2>
-          </center>
-          </div>
-        </div>
-        <div class="panel panel-primary">
-           <div class="panel-heading">Make a Call</div>
-           <div class="panel-body">
-             <h3>Enter Client Name below to Call</h3>
-             <div class="form-call">
-               <input type="text" id="phone-number" class="form-control" placeholder="Enter Client Name to Call" autofocus>
-               <button id="button-call" class="btn btn-lg btn-primary btn-block">Call</button>
-               <button id="button-hangup" class="btn btn-lg btn-primary btn-block">HangUp</button>
-           </div>
-         </div>
+  <header>
+    <div class="header-content">
+      <div class="header-content-inner">
+        <h1 id="homeHeading">Make Browser to Browser Call</h1>
+        <hr>
+        <p>Open application in two browsers and enter the available client name to make call. <br/>Even enter a France phone number to make call from browser.</p>
+        <a href="#about" class="btn btn-primary btn-xl page-scroll">Find Out Who is Available</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="bg-primary" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading">Make a Call</h2>
+          <hr class="primary">
         </div>
       </div>
     </div>
-  </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+        <p class="text-faded" id="client-name"> Client Name
+        </p>
+        <div id="log"> </div>
+      </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Clients Online</h3>
+            </div>
+            <div class="panel-body">
+              {{#each userslist}}
+                <h4 style="color:#F05F40">{{> user}}</h4>
+                {{/each}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+          <p class="text-faded">Enter Client Name from Chat List</p>
+          <div class="form-call">
+            <p><input type="text" id="phone-number" class="form-control" placeholder="Enter Client Name from Chat List"></p>
+            <button id="button-call" class="page-scroll btn btn-default btn-xl sr-button">Call</button>
+            <button id="button-hangup" class="page-scroll btn btn-default btn-xl sr-button">HangUp</button>
+          </div>
+        </div>
+      </div>
+        <br/>
+       <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 text-center">
+          <div class="panel panel-default" id="log1">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Call Progress Activity</h3>
+            </div>
+            <div class="panel-body">
+              <a href="#about" class="list-group-item" id="callprogress">
+                {{#each logcalls}} {{> logcall}}   {{/each}}
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+          <h2 class="section-heading">Supported Browsers</h2>
+          <hr class="primary">
+          <p>Chrome and FireFox</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </body>
 
 <template name="logcall">
   <li>{{callStatus}}</li>
+</template>
+
+<template name="user">
+  <li>{{username}} </li>
 </template>

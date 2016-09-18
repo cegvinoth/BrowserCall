@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 import twilio from 'twilio';
 import { Logcalls } from '../../imports/api/logcalls.js';
+import { Accounts } from 'meteor/accounts-base';
+import { Session } from 'meteor/session';
 
 export default class CallBox extends React.Component {
 constructor(props) {
@@ -12,7 +15,7 @@ componentDidMount() {
 
 render() {
   return (
-       <div> Application Loaded </div>
+       <div> </div>
   );
 }
 }
@@ -64,13 +67,33 @@ function InitiateWebApp()
   });
 
   setClientNameUI(identity);
-
+  var userIds =Meteor.userId();
+  /*Accounts.createUser({username: identity, password: token, createdAt: new Date()}, function(err) {
+  if (err)
+    console.log(err);
+  else
+    console.log('success!');
+ }); */
+  if(userIds == null)
+  {
+     Accounts.createUser({username: identity, password: token}, function(err) {
+     if (err)
+       console.log(err);
+     else
+       console.log('success!');
+    });
+  }
+  else{
+     Meteor.call('updateUser', Meteor.userId(),identity, function (error, result) {
+        console.log(error);
+    });
+  }
+Logcalls.insert({ cid: 1,createdAt: new Date(),From: '' ,To: '',callStatus: 'Application Ready'});
   document.getElementById('button-call').onclick = function () {
     document.getElementById('log1').style.display = 'block';
     var params = {
       To: document.getElementById('phone-number').value
     };
-    Logcalls.insert({ cid: 1,createdAt: new Date(),From: '' ,To: '',callStatus: 'Application Ready'});
     console.log('Calling ' + params.To + '...');
     Twilio.Device.connect(params);
   };

@@ -1,6 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import '../imports/api/logcalls.js';
+import { Accounts } from 'meteor/accounts-base';
 
 Meteor.startup(() => {
-  // code to run on server at startup
+
 });
+
+Meteor.methods({
+  updateUser: function (userId, username) {
+     Accounts.setUsername(Meteor.userId(), username);
+  },
+})
